@@ -1,0 +1,26 @@
+{
+  "name": "node-pie",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "cheerio": "~0.13.1",
+    "moment": "~2.5.1",
+    "request": "~2.33.0",
+    "timezone": "~0.0.23",
+    "moment-timezone": "~0.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mcfitz2/node-pie.git"
+  },
+  "author": "Micah Fitzgerald",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/mcfitz2/node-pie/issues"
+  }
+}
