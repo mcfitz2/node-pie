@@ -8,6 +8,9 @@ function rfc3339(mmt) {return mmt.format("YYYY-MM-DDTHH:mm:ssZ");}
 
 var BASE_URL = "https://pie.indiana.edu/apps/tcc/"
 module.exports.login = login = function(username, password, callback) {
+    if (!(username && password)) {
+	return callback(new Error("Username/password empty"), null, null);
+    }
     request.post({url:BASE_URL+"login.cfm",
                   form:{"Username":username,
                         "Password":password,
