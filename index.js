@@ -41,8 +41,11 @@ module.exports.subs = fetch = function(username, password, callback) {
 		    if (end < start) {
 			end.add("days", 1);
 		    }
-		    start.zone(300);
-		    end.zone(300);
+		    console.log("-------------------------");
+		    console.log({start:rfc3339(start), end:rfc3339(end), site:sub.site});
+		   // start.zone(300);
+		    //end.zone(300);
+		    console.log({start:rfc3339(start), end:rfc3339(end), site:sub.site});
 		    subs.push({start:rfc3339(start), end:rfc3339(end), site:sub.site});
 		}
 		
