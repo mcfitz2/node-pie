@@ -64,8 +64,8 @@ PIE.prototype.subs = subs = function(callback) {
     }
 }
 PIE.prototype.timesheet = timesheet = function(periods, callback) {
-    if (typeof day === "function") {
-	callback = day;
+    if (typeof periods === "function") {
+	callback = periods;
 	request.get({jar:true, url:"https://pie.indiana.edu/apps/tcc/main/view_timesheet.cfm"}, function(err, res, body) {
 	    var $ = cheerio.load(body);
 	    var sum = 0;
@@ -88,7 +88,7 @@ PIE.prototype.timesheet = timesheet = function(periods, callback) {
 		$("#content > form:nth-child(6) > table > tr:nth-child(5) > td:nth-child(2)").each(function(i, el) {
 		    sum += parseFloat($(el).contents()[0].data);
 		});
-		callback(err, {hours: sum});
+		cb(err, {hours: sum});
 	    });
 	});
     }
