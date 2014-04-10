@@ -63,15 +63,35 @@ PIE.prototype.subs = subs = function(callback) {
 	});
     }
 }
-PIE.prototype.timesheet = timesheet = function(callback) {
-    request.get({jar:true, url:"https://pie.indiana.edu/apps/tcc/main/view_timesheet.cfm"}, function(err, res, body) {
-	var $ = cheerio.load(body);
-	var sum = 0;
-	$("#content > form:nth-child(6) > table > tr:nth-child(5) > td:nth-child(2)").each(function(i, el) {
-	    sum += parseFloat($(el).contents()[0].data);
+PIE.prototype.timesheet = timesheet = function(periods, callback) {
+    if (typeof day === "function") {
+	callback = day;
+	request.get({jar:true, url:"https://pie.indiana.edu/apps/tcc/main/view_timesheet.cfm"}, function(err, res, body) {
+	    var $ = cheerio.load(body);
+	    var sum = 0;
+	    $("#content > form:nth-child(6) > table > tr:nth-child(5) > td:nth-child(2)").each(function(i, el) {
+		sum += parseFloat($(el).contents()[0].data);
+	    });
+	    callback(err, {hours: sum});
 	});
-	callback(err, {hours: sum});
-    });
+    } else {
+	request.get({jar:true, url:"https://pie.indiana.edu/apps/tcc/main/view_timesheet.cfm"}, function(err, res, body) {
+	    var $ = cheerio.load(body);
+	    var currentPeriod = $('input[name="period_id"]').val();
+	    $ul = $('form[name="payperiod_choice"] > select > option[value="'+currentPeriod+'"]')
+	    for (var i = 0; i < periods; i++) {
+		$ul = $ul.prev();
+	    }
+	    request.post({jar:true, url:"https://pie.indiana.edu/apps/tcc/main/view_timesheet.cfm", form:{period_id:$ul.val()}}, function(req, res, body) {
+		var $ = cheerio.load(body);
+		var sum = 0;
+		$("#content > form:nth-child(6) > table > tr:nth-child(5) > td:nth-child(2)").each(function(i, el) {
+		    sum += parseFloat($(el).contents()[0].data);
+		});
+		callback(err, {hours: sum});
+	    });
+	});
+    }
 }
 PIE.prototype.shifts = shifts = function(pie_username, callback) {
     if (this.logged_in) {
